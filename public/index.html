@@ -1,0 +1,279 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#101b35">
+
+    <title>StockPilot | Inventory Management</title>
+
+    <!-- AV Logo Favicon -->
+    <link rel="icon" type="image/png" href="/favicon.png">
+
+    <!-- Stylesheet -->
+    <link rel="stylesheet" href="/style.css">
+</head>
+
+<body>
+    <aside class="sidebar">
+        <a class="brand" href="/">
+            <span class="brand-icon">S</span>
+            <span>Stock<span class="brand-accent">Pilot</span></span>
+        </a>
+
+        <p class="nav-label">WORKSPACE</p>
+        <a class="nav-link active" href="#dashboard">▦ <span>Dashboard</span></a>
+        <a class="nav-link" href="#inventory">▤ <span>Inventory</span></a>
+        <a class="nav-link" href="#add-product">＋ <span>Add product</span></a>
+
+        <div class="sidebar-bottom">
+            <div class="profile-icon">SP</div>
+            <div>
+                <strong>StockPilot</strong>
+                <small>Inventory workspace</small>
+            </div>
+        </div>
+    </aside>
+
+    <main class="main-content">
+        <header class="topbar">
+            <div>
+                <p class="eyebrow">INVENTORY MANAGEMENT</p>
+                <h1>Dashboard</h1>
+                <p class="subtitle">Your stock, organized and under control.</p>
+            </div>
+
+            <div class="server-status">
+                <span class="status-dot"></span>
+                Server application
+            </div>
+        </header>
+
+        <!-- Dashboard Overview -->
+        <section id="dashboard">
+            <div class="section-heading">
+                <div>
+                    <h2>Overview</h2>
+                    <p>A quick look at your inventory.</p>
+                </div>
+
+                <button class="secondary-button" id="refresh-button" type="button">
+                    ↻ Refresh
+                </button>
+            </div>
+
+            <div class="stats-grid">
+                <article class="stat-card">
+                    <div class="stat-top">
+                        <span>Total products</span>
+                        <span class="stat-icon blue">▤</span>
+                    </div>
+                    <p class="stat-number" id="total-products">0</p>
+                    <p class="stat-note">Unique inventory items</p>
+                </article>
+
+                <article class="stat-card">
+                    <div class="stat-top">
+                        <span>Total units</span>
+                        <span class="stat-icon violet">▦</span>
+                    </div>
+                    <p class="stat-number" id="total-units">0</p>
+                    <p class="stat-note">Units across all products</p>
+                </article>
+
+                <article class="stat-card">
+                    <div class="stat-top">
+                        <span>Low / no stock</span>
+                        <span class="stat-icon orange">!</span>
+                    </div>
+                    <p class="stat-number" id="low-stock">0</p>
+                    <p class="stat-note">Products needing attention</p>
+                </article>
+
+                <article class="stat-card">
+                    <div class="stat-top">
+                        <span>Expired</span>
+                        <span class="stat-icon red">⌁</span>
+                    </div>
+                    <p class="stat-number" id="expired-products">0</p>
+                    <p class="stat-note">Products past expiry date</p>
+                </article>
+            </div>
+        </section>
+
+        <!-- Product Form and Inventory -->
+        <section class="content-grid">
+
+            <!-- Add Product Form -->
+            <article class="panel form-panel" id="add-product">
+                <div class="panel-heading">
+                    <div>
+                        <span class="step-label">NEW ITEM</span>
+                        <h2>Add a product</h2>
+                        <p>Enter product details below.</p>
+                    </div>
+                    <span class="heading-symbol">＋</span>
+                </div>
+
+                <div
+                    id="form-message"
+                    class="message hidden"
+                    role="status"
+                    aria-live="polite">
+                </div>
+
+                <form id="product-form" novalidate>
+                    <div class="field">
+                        <label for="name">Product name <span>*</span></label>
+                        <input
+                            id="name"
+                            name="name"
+                            type="text"
+                            placeholder="e.g. Organic Green Tea"
+                            required>
+                    </div>
+
+                    <div class="field-row">
+                        <div class="field">
+                            <label for="sku">SKU <span>*</span></label>
+                            <input
+                                id="sku"
+                                name="sku"
+                                type="text"
+                                placeholder="e.g. TEA-001"
+                                required>
+                        </div>
+
+                        <div class="field">
+                            <label for="category">Category <span>*</span></label>
+                            <select id="category" name="category" required>
+                                <option value="">Select category</option>
+                                <option value="Grocery">Grocery</option>
+                                <option value="Electronics">Electronics</option>
+                                <option value="Clothing">Clothing</option>
+                                <option value="Healthcare">Healthcare</option>
+                                <option value="Stationery">Stationery</option>
+                                <option value="Other">Other</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="field-row">
+                        <div class="field">
+                            <label for="price">Unit price (₹) <span>*</span></label>
+                            <input
+                                id="price"
+                                name="price"
+                                type="number"
+                                min="0"
+                                step="0.01"
+                                placeholder="0.00"
+                                required>
+                        </div>
+
+                        <div class="field">
+                            <label for="quantity">Quantity <span>*</span></label>
+                            <input
+                                id="quantity"
+                                name="quantity"
+                                type="number"
+                                min="0"
+                                step="1"
+                                placeholder="0"
+                                required>
+                        </div>
+                    </div>
+
+                    <div class="field-row">
+                        <div class="field">
+                            <label for="reorderLevel">Reorder level <span>*</span></label>
+                            <input
+                                id="reorderLevel"
+                                name="reorderLevel"
+                                type="number"
+                                min="0"
+                                step="1"
+                                value="5"
+                                required>
+                        </div>
+
+                        <div class="field">
+                            <label for="expiryDate">Expiry date</label>
+                            <input
+                                id="expiryDate"
+                                name="expiryDate"
+                                type="date">
+                        </div>
+                    </div>
+
+                    <p class="form-hint">
+                        * Required fields. Inputs are validated on the server.
+                    </p>
+
+                    <button class="primary-button" type="submit">
+                        <span>＋</span> Add to inventory
+                    </button>
+                </form>
+            </article>
+
+            <!-- Inventory Table -->
+            <article class="panel inventory-panel" id="inventory">
+                <div class="panel-heading inventory-heading">
+                    <div>
+                        <span class="step-label">YOUR CATALOG</span>
+                        <h2>Inventory</h2>
+                        <p>Review products and stock status.</p>
+                    </div>
+
+                    <span class="count-badge" id="inventory-count">0 items</span>
+                </div>
+
+                <div class="search-box">
+                    <span>⌕</span>
+                    <input
+                        id="search-input"
+                        type="search"
+                        placeholder="Search by name or SKU..."
+                        aria-label="Search inventory">
+                </div>
+
+                <div class="table-wrap">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>PRODUCT</th>
+                                <th>PRICE</th>
+                                <th>QTY</th>
+                                <th>STATUS</th>
+                            </tr>
+                        </thead>
+
+                        <tbody id="inventory-body">
+                            <tr>
+                                <td colspan="4" class="empty-state">
+                                    No products yet. Add your first product.
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="inventory-footer">
+                    <span id="inventory-summary">Showing 0 products</span>
+                    <span>Live inventory view</span>
+                </div>
+            </article>
+        </section>
+
+        <!-- Footer -->
+        <footer class="page-footer">
+            <span>StockPilot</span>
+            <span>Node.js · Express · Server-side validation</span>
+        </footer>
+    </main>
+
+    <!-- Application Logic -->
+    <script src="/app.js"></script>
+</body>
+</html>

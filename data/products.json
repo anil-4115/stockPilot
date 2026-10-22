@@ -1,0 +1,13 @@
+[
+  {
+    "id": 1,
+    "name": "Red label",
+    "sku": "PERSIST-001",
+    "category": "Other",
+    "price": 1500,
+    "quantity": 10,
+    "reorderLevel": 5,
+    "expiryDate": "2035-12-31",
+    "createdAt": "2026-10-22T18:47:11.543Z"
+  }
+]
