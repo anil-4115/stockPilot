@@ -68,7 +68,7 @@ function renderProducts() {
         const row = document.createElement("tr");
         const cell = document.createElement("td");
 
-        cell.colSpan = 4;
+        cell.colSpan = 5;
         cell.className = "empty-state";
         cell.textContent = products.length === 0
             ? "No products yet. Add your first product."
@@ -107,11 +107,30 @@ function renderProducts() {
 
             statusCell.appendChild(statusBadge);
 
+            // Delete button
+            const actionCell = document.createElement("td");
+            const deleteButton = document.createElement("button");
+
+            deleteButton.type = "button";
+            deleteButton.textContent = "Delete";
+            deleteButton.className = "delete-button";
+            deleteButton.setAttribute(
+                "aria-label",
+                `Delete ${product.name}`
+            );
+
+            deleteButton.addEventListener("click", () => {
+                deleteProduct(product, deleteButton);
+            });
+
+            actionCell.appendChild(deleteButton);
+
             row.append(
                 productCell,
                 priceCell,
                 quantityCell,
-                statusCell
+                statusCell,
+                actionCell
             );
 
             inventoryBody.appendChild(row);
@@ -127,7 +146,7 @@ function renderProducts() {
 
 function updateDashboard() {
     const totalUnits = products.reduce(
-        (total, product) => total + product.quantity,
+        (total, product) => total + Number(product.quantity),
         0
     );
 
@@ -157,7 +176,10 @@ async function loadProducts() {
     refreshButton.disabled = true;
 
     try {
-        const response = await fetch("/api/products");
+        const response = await fetch("/api/products", {
+            cache: "no-store"
+        });
+
         const data = await response.json();
 
         if (!response.ok || !data.success) {
@@ -174,6 +196,48 @@ async function loadProducts() {
         );
     } finally {
         refreshButton.disabled = false;
+    }
+}
+
+// Delete a product from GitHub-backed storage
+async function deleteProduct(product, button) {
+    const confirmed = window.confirm(
+        `Are you sure you want to delete "${product.name}" (SKU: ${product.sku})?`
+    );
+
+    if (!confirmed) return;
+
+    hideMessage();
+    button.disabled = true;
+    button.textContent = "Deleting...";
+
+    try {
+        const response = await fetch(
+            `/api/products/${encodeURIComponent(product.id)}`,
+            {
+                method: "DELETE",
+                headers: {
+                    "Accept": "application/json"
+                }
+            }
+        );
+
+        const data = await response.json();
+
+        if (!response.ok || !data.success) {
+            throw new Error(data.message || "Could not delete product.");
+        }
+
+        showMessage(data.message || "Product deleted successfully!", "success");
+        await loadProducts();
+    } catch (error) {
+        showMessage(
+            error.message || "Unable to delete the product. Please try again.",
+            "error"
+        );
+
+        button.disabled = false;
+        button.textContent = "Delete";
     }
 }
 
@@ -217,7 +281,6 @@ productForm.addEventListener("submit", async event => {
         document.getElementById("reorderLevel").value = 5;
 
         await loadProducts();
-
     } catch (error) {
         showMessage(
             "Could not connect to the server. Please try again.",
