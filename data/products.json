@@ -20,5 +20,16 @@
     "reorderLevel": 5,
     "expiryDate": "2026-12-31",
     "createdAt": "2026-10-23T11:30:36.295Z"
+  },
+  {
+    "id": 3,
+    "name": "Test Notebook",
+    "sku": "TEST101",
+    "category": "Stationery",
+    "price": 50,
+    "quantity": 50,
+    "reorderLevel": 10,
+    "expiryDate": "2027-12-31",
+    "createdAt": "2026-10-23T12:00:11.382Z"
   }
 ]
