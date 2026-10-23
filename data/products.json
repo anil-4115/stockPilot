@@ -9,5 +9,16 @@
     "reorderLevel": 5,
     "expiryDate": "2035-12-31",
     "createdAt": "2026-10-22T18:47:11.543Z"
+  },
+  {
+    "id": 2,
+    "name": "Maggi",
+    "sku": "MG-897",
+    "category": "Grocery",
+    "price": 15,
+    "quantity": 450,
+    "reorderLevel": 5,
+    "expiryDate": "2026-12-31",
+    "createdAt": "2026-10-23T11:30:36.295Z"
   }
 ]
